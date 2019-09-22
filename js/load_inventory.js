@@ -30,10 +30,12 @@ window.onload = function load_bannerInfo(){
     '</div>';
   const prod_quantityRow =
     '<div class="row QUANT_ROW">' +
-      '<div class="col-sm-4 PROD_COL"> '+
-        '<img src="../images/thermos.png" alt="Air Can" height="30px"> </img>'+
+      '<div class="col-sm-4 "> '+
+        '<img src="../images/thermos.png" alt="Air Can" style="background-color:transparent;border:none;height:100px;"> </img>'+
       '</div> '+
-      '<div class="col-sm-8 PROD_COL"> OK '+
+      '<div class="col-sm-4 "> OK '+
+      '</div> '+
+      '<div class="col-sm-4 "> OK '+
       '</div> '+
     '</div>';
   const prod_checkout = ""; // create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
@@ -96,7 +98,7 @@ window.onload = function load_bannerInfo(){
         // add stock level to jumbo
         prodJumboClass.getElementsByClassName(htmlClass_prodStock)[0].innerHTML += myObj[k].air_stock;
 
-        //prodJumboClass.getElementsByClassName(htmlClass_prodQuantityRowHolder)[0].innerHTML = prod_quantityRow;
+        prodJumboClass.getElementsByClassName(htmlClass_prodQuantityRowHolder)[0].innerHTML = prod_quantityRow;
       }
 
       // load random air images from unsplash // https://source.unsplash.com/
