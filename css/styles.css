@@ -1,12 +1,27 @@
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 body, html {
+  background-color: #303030;
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
+.navbar {
+  background-color:  #212121;
+}
+
 .banner {
   /* The image used */
-  background-image: url('../images/sky.jpg');
+  /*background-image: url('../images/sky.jpg');*/
 
   /* Full height */
   height: 100%;
@@ -25,19 +40,130 @@ body, html {
   top: 50%;
   width: 100%;
   text-align: center;
-  color: #000;
+  color: #ffffff;
 
 }
 
-#BANNER_TITLE {
+.bg_caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+}
+
+.bg_captionTitle {
+  font-family: 'Lobster', cursive;
   font-size: 75px;
+  color: #fd5e53;
+
+  position: relative;
+  top: -2.8px;
+  right: -2.8px;
 }
 
-#BANNER_INFO {
+.bg_captionInfo {
   font-size: 50px;
+
+  color: #fd5e53;
+  position:relative;
+  top: -2px;
+  left: -2px;
+}
+
+.BANNER_TITLE {
+  font-family: 'Lobster', cursive;
+  font-size: 75px;
+
+}
+
+.BANNER_INFO{
+  font-size: 50px;
+
+}
+
+
+.BG_3D{
+  background-color: #fd5e53;
+  /*#424242;*/
+  padding: 0px;
+
+  position:relative;
+  top: -5px;
+  right: -5px;
+}
+
+.PROD_JUMBO {
+  position:relative;
+  top: 5px;
+  right: 5px;
+
+  background-color: #c9c9c9;
+
+}
+
+#product_jumboContainer {
+  margin: -50px 0px -50px 0px;
+}
+
+#city_text {
+  text-align:center;
+  vertical-align: text-top;
+}
+
+#price_text {
+  text-align:center;
+}
+
+#stock_text {
+  text-align:center;
+}
+
+#airCan_img {
+  background-color:transparent;
+  border:none;
+  height:100px;
+}
+
+
+.CITY_NAME {
+  font-family: 'Lobster', cursive;
 }
 
 .row{
-  padding:0 15px;
-  margin:0; /* try to get rid of horizontal space that is created from the padding of row. */
+
+  margin:0; /* try to get rid of horizontal scroll space that is created from the padding of row. */
+}
+
+.AIR_CAN {
+  border: solid;
+  border-color: red;
+}
+
+
+#quantity_input {
+  text-align: center;
+
+}
+
+
+.SUBBUTTON:hover {
+  background-color: #fd5e53;
+  color: white;
+}
+
+#sub_btn {
+  width: 100%;
+  border: 2px solid #fd5e53;
+}
+
+.ADDBUTTON:Hover {
+  background-color: #fd5e53;
+  color: white;
+}
+
+#add_btn {
+  width: 100%;
+  border: 2px solid #fd5e53;
 }

@@ -1,8 +1,56 @@
+window.onload = function load_pageInfo(){
+  load_bannerInfo();
+
+  load_inventoryInfo();
+}
 
 
-// CONCAT with load_pageInfo.js
+function load_bannerInfo(){
 
-function load_InventoryInfo(){
+  // set banner image
+  load_AirImage();
+
+  // AJAX
+  xmlhttp = new XMLHttpRequest();
+
+  // handle response
+  xmlhttp.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){ // this.status == 200 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+
+
+      myObj = JSON.parse(this.responseText);
+
+      document.getElementsByClassName("BANNER_TITLE")[0].innerHTML = myObj.title;
+      document.getElementsByClassName("BANNER_INFO")[0].innerHTML = myObj.caption;
+
+      document.getElementById("JSON_RET").innerHTML = "YEEEEEEEEEEEEEEEET";
+
+    } else {
+      document.getElementById("demo").innerHTML = xmlhttp.readyState + " : " + xmlhttp.status + " : " + xmlhttp.statusText;
+    }
+  }
+
+  xmlhttp.open("POST", "http://localhost:8080/AirWebsite/AirPHP/get_bannerInfo.php", true); // true = async call
+  xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+  xmlhttp.send(); // send AJAX request. Asynchronous JavaScript And XML.
+  document.getElementById("JSON_RET").innerHTML = "oooooooooooooooooooooo";
+
+
+}
+
+
+function load_AirImage(){
+  console.log("HI");
+  fetch(`https://source.unsplash.com/1920x1080/?sky,clouds`).then((response) => {
+
+    document.getElementsByClassName("banner")[0].style.backgroundImage = "url( " + response.url + " )";
+    // `<a href="${response.url}"> <img class="Air-image" style="height:100%;width:100%;" src="${response.url}" alt="Air image"/> </a>`;
+
+  })
+}
+
+function load_inventoryInfo(){
 
   // html elements
   const prod_row =
@@ -16,17 +64,17 @@ function load_InventoryInfo(){
     '<div class="jumbotron jumbotron-fluid BG_3D">' +
 
         '<div class="jumbotron jumbotron-fluid PROD_JUMBO" id="JUM">' +
-          '<div class="container" style="margin: -50px 0px -50px 0px;">' +
-            '<h3 class="CITY_NAME" style="text-align:center;vertical-align: text-top;">' +
+          '<div class="container" id="product_jumboContainer" >' +
+            '<h3 class="CITY_NAME" id="city_text">' +
               'Air - ' +
             '</h3>' +
-            '<div class="container PROD_IMAGE" style="height:250px;" style="border-style:solid;border-color:red;">' +
+            '<div class="container PROD_IMAGE" style="height:250px;">' +
             '</div>' +
             '<br>' +
-            '<p class="PRICE" style="text-align:center;">' +
+            '<p class="PRICE" id="price_text" >' +
               'Price for each Litre: $ ' +
             '</p>' +
-            '<p class="STOCK" style="text-align:center;">' +
+            '<p class="STOCK" id="stock_text">' +
               'Stock: ' +
             '</p>' +
             '<div class="PROD_QUANTITYROW_HOLDER"> </div>' +
@@ -37,14 +85,25 @@ function load_InventoryInfo(){
   const prod_quantityRow =
     '<div class="row QUANT_ROW">' +
       '<div class="col-sm-4 "> '+
-        '<img class="AIR_CAN" alt="Air Can" style="background-color:transparent;border:none;height:100px;"> </img>'+
+        '<img class="AIR_CAN" id="airCan_img" alt="Air Can"> </img>'+
       '</div> '+
-      '<div class="col-sm-4 "> OK '+
+      '<div class="col-sm-4">'+
+        '<div class="row QUANT_INPUTBOX">' +
+        '</div>' +
+        '<div class="row">' +
+          '<div class="col-sm-6 SUB_COL" style="border:solid;">'+
+          '</div> '+
+          '<div class="col-sm-6 ADD_COL" style="border:solid;">'+
+          '</div> ' +
       '</div> '+
       '<div class="col-sm-4 "> OK '+
       '</div> '+
     '</div>';
-  const prod_checkout = ""; // create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
+  //// create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
+  const prod_inputSection =
+    '<input type="number" class="form-control" id="quantity_input">';
+  const prod_subBtn = '<button type="button" id="sub_btn" class="btn SUBBUTTON">-</button>';
+  const prod_addBtn = '<button type="button" id="add_btn" class="btn ADDBUTTON">+</button>';
 
   // html class names
   const htmlClass_prodList = 'PROD_LIST_CLASS';
@@ -57,6 +116,9 @@ function load_InventoryInfo(){
   const htmlClass_prodStock = 'STOCK';
   const htmlClass_prodQuantityRowHolder = 'PROD_QUANTITYROW_HOLDER';
   const htmlClass_prodAirCan = 'AIR_CAN';
+  const htmlClass_prodQuantIn = 'QUANT_INPUTBOX';
+  const htmlClass_subBtn = 'SUB_COL';
+  const htmlClass_addBtn = 'ADD_COL';
 
   // Execute PHP to get the Air inventory
   // AJAX
@@ -105,14 +167,22 @@ function load_InventoryInfo(){
         // add stock level to jumbo
         prodJumboClass.getElementsByClassName(htmlClass_prodStock)[0].innerHTML += myObj[k].air_stock;
 
+        // TODO load city image
+        // ...
+
         var prodQuantRowClass = prodJumboClass.getElementsByClassName(htmlClass_prodQuantityRowHolder)[0];
         prodQuantRowClass.innerHTML = prod_quantityRow;
 
         prodQuantRowClass.getElementsByClassName(htmlClass_prodAirCan)[0].src = '../images/surpremeLmao_alt.png';
+
+        prodQuantRowClass.getElementsByClassName(htmlClass_prodQuantIn)[0].innerHTML = prod_inputSection;
+        prodQuantRowClass.getElementsByClassName(htmlClass_subBtn)[0].innerHTML = prod_subBtn;
+        prodQuantRowClass.getElementsByClassName(htmlClass_addBtn)[0].innerHTML = prod_addBtn;
       }
 
-      // load random air images from unsplash // https://source.unsplash.com/
-      load_AirImages(retObj_len);
+      // load prod images
+      load_prodAirImages(retObj_len);
+
     }
   }
 
@@ -172,10 +242,10 @@ function load_InventoryInfo(){
   */
 }
 
-function load_AirImages(size){
+function load_prodAirImages(size){
 
   for(let i = 0; i < size; i ++){
-    fetch(`https://source.unsplash.com/1600x900/?sky`).then((response) => {
+    fetch(`https://source.unsplash.com/featured/?clouds`).then((response) => {
 
       document.getElementsByClassName("PROD_IMAGE")[i].innerHTML = `<a href="${response.url}"> <img class="Air-image" style="height:100%;width:100%;" src="${response.url}" alt="Air image"/> </a>`;
 
@@ -183,6 +253,7 @@ function load_AirImages(size){
   }
 
 }
+
 
 Object.size = function(obj) {
     var size = 0, key;
