@@ -69,7 +69,8 @@ body, html {
   color: #fd5e53;
   position:relative;
   top: -2px;
-  left: -2px;
+  left: 2px;
+
 }
 
 .BANNER_TITLE {
@@ -148,14 +149,28 @@ body, html {
 }
 
 
+
+.SUBBUTTON {
+
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
 .SUBBUTTON:hover {
   background-color: #fd5e53;
   color: white;
 }
 
+
 #sub_btn {
-  width: 100%;
+
   border: 2px solid #fd5e53;
+}
+
+.ADDBUTTON {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
 }
 
 .ADDBUTTON:Hover {
@@ -164,6 +179,15 @@ body, html {
 }
 
 #add_btn {
-  width: 100%;
+
   border: 2px solid #fd5e53;
+}
+
+
+
+.BUYBUTTON {
+
+  height:100%;
+  width:100%;
+  background-color: #fd5e53;
 }

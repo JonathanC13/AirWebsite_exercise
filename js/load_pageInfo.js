@@ -20,6 +20,9 @@ function load_bannerInfo(){
 
       myObj = JSON.parse(this.responseText);
 
+      document.getElementsByClassName("bg_captionTitle")[0].innerHTML = myObj.title;
+      document.getElementsByClassName("bg_captionInfo")[0].innerHTML = myObj.caption;
+
       document.getElementsByClassName("BANNER_TITLE")[0].innerHTML = myObj.title;
       document.getElementsByClassName("BANNER_INFO")[0].innerHTML = myObj.caption;
 
@@ -57,53 +60,56 @@ function load_inventoryInfo(){
     '<div class="row PROD_ROW" id="PRODUCT_ROW">' +
     '</div>';
   const prod_col =
-    '<div class="col-sm-4 PROD_COL"> ' +
+    '<div class="col-lg-4 PROD_COL"> ' +
       'OK' +
     '</div>';
   const prod_jumbo =
     '<div class="jumbotron jumbotron-fluid BG_3D">' +
 
-        '<div class="jumbotron jumbotron-fluid PROD_JUMBO" id="JUM">' +
-          '<div class="container" id="product_jumboContainer" >' +
-            '<h3 class="CITY_NAME" id="city_text">' +
-              'Air - ' +
-            '</h3>' +
-            '<div class="container PROD_IMAGE" style="height:250px;">' +
-            '</div>' +
-            '<br>' +
-            '<p class="PRICE" id="price_text" >' +
-              'Price for each Litre: $ ' +
-            '</p>' +
-            '<p class="STOCK" id="stock_text">' +
-              'Stock: ' +
-            '</p>' +
-            '<div class="PROD_QUANTITYROW_HOLDER"> </div>' +
+      '<div class="jumbotron jumbotron-fluid PROD_JUMBO" id="JUM">' +
+        '<div class="container" id="product_jumboContainer" >' +
+          '<h3 class="CITY_NAME" id="city_text">' +
+            'Air - ' +
+          '</h3>' +
+          '<div class="container PROD_IMAGE" style="height:250px;">' +
           '</div>' +
+          '<br>' +
+          '<p class="PRICE" id="price_text" >' +
+            'Price for each Litre: $ ' +
+          '</p>' +
+          '<p class="STOCK" id="stock_text">' +
+            'Stock: ' +
+          '</p>' +
+          '<div class="PROD_QUANTITYROW_HOLDER"> </div>' +
         '</div>' +
+      '</div>' +
 
     '</div>';
   const prod_quantityRow =
     '<div class="row QUANT_ROW">' +
-      '<div class="col-sm-4 "> '+
+      '<div class="col-lg-4 "> '+
         '<img class="AIR_CAN" id="airCan_img" alt="Air Can"> </img>'+
       '</div> '+
-      '<div class="col-sm-4">'+
+      '<div class="col-lg-4">'+
         '<div class="row QUANT_INPUTBOX">' +
         '</div>' +
+
         '<div class="row">' +
-          '<div class="col-sm-6 SUB_COL" style="border:solid;">'+
+          '<div class="col-lg-6  SUB_COL">'+
           '</div> '+
-          '<div class="col-sm-6 ADD_COL" style="border:solid;">'+
+          '<div class="col-lg-6 ADD_COL">'+
           '</div> ' +
+        '</div>' +
       '</div> '+
-      '<div class="col-sm-4 "> OK '+
+      '<div class="col-lg-4 BUY_COL">'+
       '</div> '+
     '</div>';
   //// create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
   const prod_inputSection =
     '<input type="number" class="form-control" id="quantity_input">';
-  const prod_subBtn = '<button type="button" id="sub_btn" class="btn SUBBUTTON">-</button>';
-  const prod_addBtn = '<button type="button" id="add_btn" class="btn ADDBUTTON">+</button>';
+  const prod_subBtn = '<button type="number" id="sub_btn" class="btn btn-block SUBBUTTON">-</button>';
+  const prod_addBtn = '<button type="number" id="add_btn" class="btn btn-block ADDBUTTON">+</button>';
+  const prod_buyBtn = '<button class="btn btn-block BUYBUTTON">BUY?!</button>'
 
   // html class names
   const htmlClass_prodList = 'PROD_LIST_CLASS';
@@ -119,6 +125,7 @@ function load_inventoryInfo(){
   const htmlClass_prodQuantIn = 'QUANT_INPUTBOX';
   const htmlClass_subBtn = 'SUB_COL';
   const htmlClass_addBtn = 'ADD_COL';
+  const htmlClass_buyCol = "BUY_COL";
 
   // Execute PHP to get the Air inventory
   // AJAX
@@ -176,8 +183,11 @@ function load_inventoryInfo(){
         prodQuantRowClass.getElementsByClassName(htmlClass_prodAirCan)[0].src = '../images/surpremeLmao_alt.png';
 
         prodQuantRowClass.getElementsByClassName(htmlClass_prodQuantIn)[0].innerHTML = prod_inputSection;
-        prodQuantRowClass.getElementsByClassName(htmlClass_subBtn)[0].innerHTML = prod_subBtn;
-        prodQuantRowClass.getElementsByClassName(htmlClass_addBtn)[0].innerHTML = prod_addBtn;
+        prodQuantRowClass.getElementsByClassName(htmlClass_subBtn)[0].innerHTML += prod_subBtn;
+        prodQuantRowClass.getElementsByClassName(htmlClass_addBtn)[0].innerHTML += prod_addBtn;
+
+        prodQuantRowClass.getElementsByClassName(htmlClass_buyCol)[0].innerHTML += prod_buyBtn;
+
       }
 
       // load prod images
