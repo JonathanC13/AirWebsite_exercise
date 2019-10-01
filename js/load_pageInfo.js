@@ -20,8 +20,8 @@ function load_bannerInfo(){
 
       myObj = JSON.parse(this.responseText);
 
-      document.getElementsByClassName("bg_captionTitle")[0].innerHTML = myObj.title;
-      document.getElementsByClassName("bg_captionInfo")[0].innerHTML = myObj.caption;
+      document.getElementsByClassName("BG_CAPTIONTITLE")[0].innerHTML = myObj.title;
+      document.getElementsByClassName("BG_CAPTIONINFO")[0].innerHTML = myObj.caption;
 
       document.getElementsByClassName("BANNER_TITLE")[0].innerHTML = myObj.title;
       document.getElementsByClassName("BANNER_INFO")[0].innerHTML = myObj.caption;
@@ -91,7 +91,7 @@ function load_inventoryInfo(){
         '<img class="AIR_CAN" id="airCan_img" alt="Air Can"> </img>'+
       '</div> '+
       '<div class="col-lg-4">'+
-        '<div class="row QUANT_INPUTBOX">' +
+        '<div class="row QUANT_INPUTBOX_ROW">' +
         '</div>' +
 
         '<div class="row">' +
@@ -106,10 +106,10 @@ function load_inventoryInfo(){
     '</div>';
   //// create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
   const prod_inputSection =
-    '<input type="number" class="form-control" id="quantity_input">';
-  const prod_subBtn = '<button type="number" id="sub_btn" class="btn btn-block SUBBUTTON">-</button>';
-  const prod_addBtn = '<button type="number" id="add_btn" class="btn btn-block ADDBUTTON">+</button>';
-  const prod_buyBtn = '<button class="btn btn-block BUYBUTTON">BUY?!</button>'
+    '<input type="number" class="form-control QUANT_IN"> </input>';
+  const prod_subBtn = '<button type="number" class="btn btn-block SUBBUTTON">-</button>';
+  const prod_addBtn = '<button type="number" class="btn btn-block ADDBUTTON">+</button>';
+  const prod_buyBtn = '<button class="btn btn-block BUYBUTTON">BUY?!</button>' // data-toggle="modal" data-target="#myModal"
 
   // html class names
   const htmlClass_prodList = 'PROD_LIST_CLASS';
@@ -122,10 +122,15 @@ function load_inventoryInfo(){
   const htmlClass_prodStock = 'STOCK';
   const htmlClass_prodQuantityRowHolder = 'PROD_QUANTITYROW_HOLDER';
   const htmlClass_prodAirCan = 'AIR_CAN';
-  const htmlClass_prodQuantIn = 'QUANT_INPUTBOX';
-  const htmlClass_subBtn = 'SUB_COL';
-  const htmlClass_addBtn = 'ADD_COL';
+  const htmlClass_prodQuantIn = 'QUANT_INPUTBOX_ROW';
+  const htmlClass_quantBox = 'QUANT_IN';
+  const htmlClass_subBtnCol = 'SUB_COL';
+  const htmlClass_subBtnAct = 'SUBBUTTON';
+  const htmlClass_addBtnCol = 'ADD_COL';
+  const htmlClass_addBtnAct = 'ADDBUTTON';
   const htmlClass_buyCol = "BUY_COL";
+  const htmlClass_buyBtnAct = 'BUYBUTTON';
+
 
   // Execute PHP to get the Air inventory
   // AJAX
@@ -162,10 +167,10 @@ function load_inventoryInfo(){
         // add the columns in the current row
         prodRowClass.innerHTML += prod_col;
 
-        var prodColClass = prodRowClass.getElementsByClassName(htmlClass_prodCol)[k % 3];  // col number in the row
+        let prodColClass = prodRowClass.getElementsByClassName(htmlClass_prodCol)[k % 3];  // col number in the row
         prodColClass.innerHTML = prod_jumbo;           // set a jumbotron in the current column
 
-        var prodJumboClass = prodColClass.getElementsByClassName(htmlClass_prodJumbo)[0];
+        let prodJumboClass = prodColClass.getElementsByClassName(htmlClass_prodJumbo)[0];
 
         // add city name
         prodJumboClass.getElementsByClassName(htmlClass_prodCity)[0].innerHTML += myObj[k].air_city;
@@ -177,21 +182,33 @@ function load_inventoryInfo(){
         // TODO load city image
         // ...
 
-        var prodQuantRowClass = prodJumboClass.getElementsByClassName(htmlClass_prodQuantityRowHolder)[0];
+        let prodQuantRowClass = prodJumboClass.getElementsByClassName(htmlClass_prodQuantityRowHolder)[0];
         prodQuantRowClass.innerHTML = prod_quantityRow;
 
+        // set product image
         prodQuantRowClass.getElementsByClassName(htmlClass_prodAirCan)[0].src = '../images/surpremeLmao_alt.png';
 
-        prodQuantRowClass.getElementsByClassName(htmlClass_prodQuantIn)[0].innerHTML = prod_inputSection;
-        prodQuantRowClass.getElementsByClassName(htmlClass_subBtn)[0].innerHTML += prod_subBtn;
-        prodQuantRowClass.getElementsByClassName(htmlClass_addBtn)[0].innerHTML += prod_addBtn;
+        // set input box
+        let prodInRow = prodQuantRowClass.getElementsByClassName(htmlClass_prodQuantIn)[0];
+        prodInRow.innerHTML = prod_inputSection;
+        prodInRow.getElementsByClassName(htmlClass_quantBox)[0].setAttribute("value", 0);
 
-        prodQuantRowClass.getElementsByClassName(htmlClass_buyCol)[0].innerHTML += prod_buyBtn;
+        // set subtract and add input box buttons
+        let prodQuantSubCol = prodQuantRowClass.getElementsByClassName(htmlClass_subBtnCol)[0];
+        prodQuantSubCol.innerHTML += prod_subBtn;
+        let prodQuantAddCol = prodQuantRowClass.getElementsByClassName(htmlClass_addBtnCol)[0];
+        prodQuantAddCol.innerHTML += prod_addBtn;
+
+        // set buy button
+        let prodBuyCol = prodQuantRowClass.getElementsByClassName(htmlClass_buyCol)[0];
+        prodBuyCol.innerHTML += prod_buyBtn;
 
       }
 
       // load prod images
       load_prodAirImages(retObj_len);
+
+      setButtonListeners(retObj_len, myObj);
 
     }
   }
@@ -272,3 +289,117 @@ Object.size = function(obj) {
     }
     return size;
 };
+
+function setButtonListeners(i_prodLen, jsObj_resp){
+  // add listener to the buttons
+
+  for(let i = 0; i < i_prodLen; i++){
+
+    // subtract button
+    document.getElementsByClassName('SUBBUTTON')[i].addEventListener("click", function() {
+      subtractQuantityBtn_OnClick(i, jsObj_resp);
+    });
+
+    // addition button
+    document.getElementsByClassName('ADDBUTTON')[i].addEventListener("click", function() {
+      addQuantityBtn_OnClick(i, jsObj_resp);
+    });
+
+    // Buy button
+    document.getElementsByClassName('BUYBUTTON')[i].addEventListener("click", function() {
+      buyBtn_OnClick(i, jsObj_resp);
+    });
+
+  }
+}
+
+function subtractQuantityBtn_OnClick(int_elementIndex, stockLevel){
+  var maxStock = parseInt(stockLevel);
+
+  var inBox = document.getElementsByClassName("QUANT_IN")[int_elementIndex];
+
+  var input_val = parseInt(inBox.value);
+  var sub1 = input_val - 1;
+
+  if (sub1 >= maxStock){
+    inBox.value = maxStock;
+  } else {
+    if(sub1 >= 0){
+      inBox.value = sub1;
+    } else {
+      inBox.value = 0;
+    }
+  }
+}
+
+function addQuantityBtn_OnClick(int_elementIndex, jsObj_resp){
+  var maxStock = parseInt(jsObj_resp[int_elementIndex].air_stock);
+
+  var inBox = document.getElementsByClassName("QUANT_IN")[int_elementIndex];
+
+  var input_val = parseInt(inBox.value);
+  var add1 = input_val + 1;
+
+  if(add1 <= 0){
+    inBox.value = 0;
+  } else {
+    if(add1 > maxStock){
+      inBox.value = maxStock;
+    } else {
+      inBox.value = add1;
+    }
+  }
+}
+
+function buyBtn_OnClick(int_elementIndex, jsObj_resp){
+  var maxStock = parseInt(jsObj_resp[int_elementIndex].air_stock);
+
+  var inBox = document.getElementsByClassName("QUANT_IN")[int_elementIndex];
+  var input_val = parseInt(inBox.value);
+
+  var modalMessage = "";
+  var valid_sale = false;
+
+  if(input_val < 0 || input_val > maxStock){
+     modalMessage += "Error, you tried to order " + input_val + " can(s) of air! You're a silly goose. :)";
+  } else if(input_val == 0){
+    modalMessage += "You tried to order 0 can(s) of air! :o";
+  } else {
+    modalMessage += "Congratulations, you have ordered " + input_val + " can(s) of air! We don't need your shipping address, we'll just release it into the atmosphere and there's a chance that it'll get to where you are. :D";
+    valid_sale = true;
+  }
+
+  // modal needs some work for now use alert()
+  alert(modalMessage);
+  //document.getElementById("modalMsg").innerHTML = modalMessage;
+  //document.getElementById("myModal").modal();
+
+  if(true){
+    // all that is needed to make the purchase is subtract the stock integer on the database
+    var new_obj = jsObj_resp[int_elementIndex];
+
+    new_obj.air_stock = new_obj.air_stock - input_val;
+
+    var new_json = JSON.stringify(new_obj);
+    //console.log("no: " + new_json);
+
+    // AJAX
+    xmlhttp = new XMLHttpRequest();
+
+    // handle response
+    xmlhttp.onreadystatechange = function(){
+      if(this.readyState == 4 && this.status == 200){ // this.status == 200 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
+        // for admin
+        console.log("Success");
+      }
+    }
+
+    // TODO, write php to alter stock level for the purchased product
+    xmlhttp.open("POST", "http://localhost:8080/AirWebsite/AirPHP/TODO.php", true); // true = async call
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    xmlhttp.send(); // send AJAX request. Asynchronous JavaScript And XML.
+    // /AJAX
+
+  }
+}

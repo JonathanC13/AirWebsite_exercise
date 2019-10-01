@@ -53,7 +53,7 @@ body, html {
   color: #ffffff;
 }
 
-.bg_captionTitle {
+.BG_CAPTIONTITLE {
   font-family: 'Lobster', cursive;
   font-size: 75px;
   color: #fd5e53;
@@ -63,7 +63,7 @@ body, html {
   right: -2.8px;
 }
 
-.bg_captionInfo {
+.BG_CAPTIONINFO {
   font-size: 50px;
 
   color: #fd5e53;
@@ -122,9 +122,11 @@ body, html {
 }
 
 #airCan_img {
-  background-color:transparent;
-  border:none;
-  height:100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width:50%;
+  height:75px;
 }
 
 
@@ -143,7 +145,7 @@ body, html {
 }
 
 
-#quantity_input {
+.QUANT_IN {
   text-align: center;
 
 }
@@ -155,6 +157,8 @@ body, html {
   display: inline-block;
   height: 100%;
   width: 100%;
+
+  border: 2px solid #fd5e53;
 }
 .SUBBUTTON:hover {
   background-color: #fd5e53;
@@ -162,15 +166,15 @@ body, html {
 }
 
 
-#sub_btn {
-
-  border: 2px solid #fd5e53;
-}
-
 .ADDBUTTON {
-  display: inline-block;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
   height: 100%;
   width: 100%;
+
+  border: 2px solid #fd5e53;
 }
 
 .ADDBUTTON:Hover {
@@ -178,16 +182,19 @@ body, html {
   color: white;
 }
 
-#add_btn {
-
-  border: 2px solid #fd5e53;
-}
 
 
 
 .BUYBUTTON {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 
-  height:100%;
-  width:100%;
+  height:77px;
+  width:50%;
   background-color: #fd5e53;
+}
+
+.BUYBUTTON:Hover {
+  color: white;
 }
