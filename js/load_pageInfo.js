@@ -107,7 +107,7 @@ function load_inventoryInfo(){
   //// create so that the buttons are linked to the input box [id=neg1][id=pos1][id=input1][id=1 (BUY button)]. They buy id is number of the product in the json to update
   const prod_inputSection =
     '<input type="number" class="form-control QUANT_IN"> </input>';
-  const prod_subBtn = '<button type="number" class="btn btn-block SUBBUTTON">-</button>';
+  const prod_subBtn = '<button type="number" class="btn btn-default btn-block SUBBUTTON">-</button>';
   const prod_addBtn = '<button type="number" class="btn btn-block ADDBUTTON">+</button>';
   const prod_buyBtn = '<button class="btn btn-block BUYBUTTON">BUY?!</button>' // data-toggle="modal" data-target="#myModal"
 
@@ -390,15 +390,20 @@ function buyBtn_OnClick(int_elementIndex, jsObj_resp){
     xmlhttp.onreadystatechange = function(){
       if(this.readyState == 4 && this.status == 200){ // this.status == 200 // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
         // for admin
-        console.log("Success");
+        //console.log(this.responseText);
+        //console.log("Success");
+
+        myObj = JSON.parse(this.responseText);
+        // now update the UI
+        document.getElementsByClassName("STOCK")[int_elementIndex].innerHTML = "Stock: " + myObj[0].air_stock;
       }
     }
 
     // TODO, write php to alter stock level for the purchased product
-    xmlhttp.open("POST", "http://localhost:8080/AirWebsite/AirPHP/TODO.php", true); // true = async call
+    xmlhttp.open("POST", "http://localhost:8080/AirWebsite/AirPHP/db_updateStock.php", true); // true = async call
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    xmlhttp.send(); // send AJAX request. Asynchronous JavaScript And XML.
+    xmlhttp.send("x=" + new_json); // send AJAX request. Asynchronous JavaScript And XML.
     // /AJAX
 
   }

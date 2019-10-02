@@ -126,7 +126,7 @@ body, html {
   margin-left: auto;
   margin-right: auto;
   width:50%;
-  height:75px;
+  height:100%;
 }
 
 
@@ -140,8 +140,10 @@ body, html {
 }
 
 .AIR_CAN {
+  /*
   border: solid;
   border-color: red;
+  */
 }
 
 
@@ -150,26 +152,38 @@ body, html {
 
 }
 
-
+.SUB_COL {
+  padding:0px;
+}
 
 .SUBBUTTON {
 
-  display: inline-block;
+  display: block;
+
+  text-align: center;
+
   height: 100%;
   width: 100%;
 
   border: 2px solid #fd5e53;
 }
+
 .SUBBUTTON:hover {
   background-color: #fd5e53;
   color: white;
 }
 
 
+.ADD_COL {
+  padding:0px;
+}
+
 .ADDBUTTON {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
+
 
   height: 100%;
   width: 100%;

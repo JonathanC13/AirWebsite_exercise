@@ -36,7 +36,7 @@
   //$sql = "INSERT INTO air_inventory (idair_inventory, airstock, price)
   //VALUES (3, 50, 0.00)";
   $TB_airInv = TB_AIR_INVENTORY;
-  $sql = "SELECT * FROM $TB_airInv";
+  $sql = "SELECT * FROM $TB_airInv;";
 
   if ($result = $conn->query($sql)) {
     $outp = $result->fetch_all(MYSQLI_ASSOC);
