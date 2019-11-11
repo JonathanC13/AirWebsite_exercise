@@ -2,8 +2,38 @@ window.onload = function load_pageInfo(){
   load_bannerInfo();
 
   load_inventoryInfo();
+
+  // Listener for text input (id="inputBlur") and dropbox (id="dropboxAutoPop")
+  setInputBox_FocusBlur();
+
 }
 
+function setInputBox_FocusBlur(){
+  var id_inTextBox = "inputBlur"
+  var elem_inText = document.getElementById(id_inTextBox);
+
+  //focus
+  elem_inText.onfocus = function() {setInputBox_Focus(elem_inText)};
+
+  // add on blur
+  elem_inText.onblur = function() {setInputBox_Blur(elem_inText)};
+}
+
+function setInputBox_Focus(inputText_link1){
+  // on focus // act like on click
+}
+
+function setInputBox_Blur(dropbox_link1){
+  var id_DropBox = "dropboxAutoPop"
+  var elem_DropBox = document.getElementById(id_DropBox);
+
+  var currentText = dropbox_link1.value;
+  console.log(currentText);
+
+  var newOption = document.createElement("option");
+  newOption.text = currentText;
+  elem_DropBox.add(newOption, elem_DropBox[0]);
+}
 
 function load_bannerInfo(){
 
@@ -26,10 +56,10 @@ function load_bannerInfo(){
       document.getElementsByClassName("BANNER_TITLE")[0].innerHTML = myObj.title;
       document.getElementsByClassName("BANNER_INFO")[0].innerHTML = myObj.caption;
 
-      document.getElementById("JSON_RET").innerHTML = "YEEEEEEEEEEEEEEEET";
+      //document.getElementById("JSON_RET").innerHTML = "YEEEEEEEEEEEEEEEET";
 
     } else {
-      document.getElementById("demo").innerHTML = xmlhttp.readyState + " : " + xmlhttp.status + " : " + xmlhttp.statusText;
+      //document.getElementById("demo").innerHTML = xmlhttp.readyState + " : " + xmlhttp.status + " : " + xmlhttp.statusText;
     }
   }
 
@@ -37,7 +67,7 @@ function load_bannerInfo(){
   xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
   xmlhttp.send(); // send AJAX request. Asynchronous JavaScript And XML.
-  document.getElementById("JSON_RET").innerHTML = "oooooooooooooooooooooo";
+  //document.getElementById("JSON_RET").innerHTML = "oooooooooooooooooooooo";
 
 
 }
@@ -407,4 +437,12 @@ function buyBtn_OnClick(int_elementIndex, jsObj_resp){
     // /AJAX
 
   }
+}
+
+function addToPurchaseTotal(int_bought, jsObj_resp){
+
+  // get the purchase record from the purchase table WHERE resp->purc_airCity = jsObj_resp->air_city
+  // if it doesnt exist, create a query to insert with int_bought as purc_airBought
+  // if it DOES, add the int_bought + purc_airBought and update the record
+
 }
