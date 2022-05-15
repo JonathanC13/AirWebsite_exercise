@@ -2,4 +2,3 @@
 
 Hosted locally on WAMP for development.
 
-Screenshots coming soon.
